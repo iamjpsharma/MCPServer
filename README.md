@@ -2,6 +2,18 @@
 
 A persistent vector memory server for Windsurf, VS Code, and other MCP-compliant editors.
 
+> **Note:** This server uses **MCP stdio transport** (not HTTP) to match Windsurf/Cursor’s native MCP integration. Do not try to connect via `curl`.
+
+## 🏥 Health Check
+
+To verify the server binary runs correctly:
+
+```bash
+# From within the virtual environment
+python -m mcp_memory.server --help
+```
+
+
 ## ✅ Quickstart (5-Minute Setup)
 
 **1. Clone and Setup**
@@ -58,6 +70,14 @@ Use the included helper script `ingest.sh` to add files to a specific project.
   CONTRIBUTING.md
 ```
 
+### 💡 Project ID Naming Convention
+
+It is recommended to use a consistent prefix for your project IDs to avoid collisions:
+
+- `project-thaama`
+- `project-openclaw`
+- `project-myapp`
+
 ### 2. Connect in Editor
 
 Once configured, the following tools will be available to the AI Assistant:
@@ -93,3 +113,13 @@ The AI will effectively have "long-term memory" of the files you ingested.
 ├── mcp_memory_data/    # Persistent vector storage (gitignored)
 └── README.md
 ```
+
+## 🗺️ Roadmap
+
+- [x] Local vector storage (LanceDB)
+- [x] Multi-project isolation
+- [x] Markdown ingestion
+- [ ] Improved chunking strategies (semantic chunking)
+- [ ] Support for PDF ingestion
+- [ ] Optional HTTP transport wrapper
+
