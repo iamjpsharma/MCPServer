@@ -66,6 +66,18 @@ async def list_tools() -> list[types.Tool]:
         )
     ]
 
+@server.list_resources()
+async def list_resources() -> list[types.Resource]:
+    """List available resources."""
+    # Currently no resources are exposed, returning empty list
+    return []
+
+@server.read_resource()
+async def read_resource(uri: types.AnyUrl) -> str:
+    """Read a specific resource."""
+    # No resources to read yet
+    raise ValueError(f"Resource not found: {uri}")
+
 @server.call_tool()
 async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
     try:
