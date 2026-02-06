@@ -1,8 +1,31 @@
 # MCP Memory Server
 
+![License](https://img.shields.io/github/license/iamjpsharma/MCPServer?color=blue)
+![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
+![Release](https://img.shields.io/github/v/release/iamjpsharma/MCPServer?include_prereleases)
+
 A persistent vector memory server for Windsurf, VS Code, and other MCP-compliant editors.
 
+## 🌟 Philosophy
+
+- **Privacy-first, local-first AI memory:** Your data stays on your machine.
+- **No vendor lock-in:** Uses open standards and local files.
+- **Built for MCP:** Designed specifically to enhance Windsurf, Cursor, and other MCP-compatible IDEs.
+
+## ℹ️ Status (v0.1.0)
+
+**Stable:**
+- ✅ Local MCP memory with Windsurf/Cursor
+- ✅ Multi-project isolation
+- ✅ Ingestion of Markdown docs
+
+**Not stable yet:**
+- 🚧 Auto-ingest (file watching)
+- 🚧 Memory pruning
+- 🚧 Remote sync
+
 > **Note:** This server uses **MCP stdio transport** (not HTTP) to match Windsurf/Cursor’s native MCP integration. Do not try to connect via `curl`.
+
 
 ## 🏥 Health Check
 
