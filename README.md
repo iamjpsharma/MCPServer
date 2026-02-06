@@ -35,13 +35,13 @@ Replace `/ABSOLUTE/PATH/TO/...` with the actual path to this directory.
 {
   "mcpServers": {
     "memory": {
-      "command": "/Users/jaiprakashs/Documents/AI/MCPServer/mcp-memory-server/.venv/bin/python",
+      "command": "/ABSOLUTE/PATH/TO/mcp-memory-server/.venv/bin/python",
       "args": [
         "-m",
         "mcp_memory.server"
       ],
       "env": {
-        "MCP_MEMORY_PATH": "/Users/jaiprakashs/Documents/AI/MCPServer/mcp-memory-server/mcp_memory_data"
+        "MCP_MEMORY_PATH": "/ABSOLUTE/PATH/TO/mcp-memory-server/mcp_memory_data"
       }
     }
   }
@@ -61,10 +61,10 @@ Use the included helper script `ingest.sh` to ingest context files.
 
 **Real Example (Project "Thaama"):**
 ```bash
-/Users/jaiprakashs/Documents/AI/MCPServer/mcp-memory-server/ingest.sh --project project-thaama \
-  /Users/jaiprakashs/Documents/AiDE/PROJECT_CONTEXT.md \
-  /Users/jaiprakashs/Documents/AiDE/DECISIONS.md \
-  /Users/jaiprakashs/Documents/AiDE/AI_RULES.md
+/ABSOLUTE/PATH/TO/mcp-memory-server/ingest.sh --project project-thaama \
+  /path/to/PROJECT_CONTEXT.md \
+  /path/to/DECISIONS.md \
+  /path/to/AI_RULES.md
 ```
 
 ### Tools
