@@ -27,6 +27,7 @@ build/
 
 # Local Vector DB
 mcp_memory_data/
+*.db
 
 # OS specific
 .DS_Store

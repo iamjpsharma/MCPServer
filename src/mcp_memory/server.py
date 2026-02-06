@@ -4,6 +4,8 @@ import traceback
 import json
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
+# This is the Windsurf/IDE stdio MCP endpoint
+# See README for usage examples
 import mcp.types as types
 from mcp_memory.db import store
 
