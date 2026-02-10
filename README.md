@@ -150,7 +150,6 @@ The AI will effectively have "long-term memory" of the files you ingested.
 - [x] Markdown ingestion
 - [x] Fix installation instructions (Windows support, editable install)
 - [x] Fix resource listing error
-- [ ] Improved chunking strategies (semantic chunking)
+- [x] Improved chunking strategies (semantic chunking)
 - [ ] Support for PDF ingestion
-- [ ] Optional HTTP transport wrapper
-
+- [ ] HTTP transport wrapper
