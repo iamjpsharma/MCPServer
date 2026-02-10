@@ -2,40 +2,13 @@ import argparse
 import os
 import uuid
 from mcp_memory.db import store
+from mcp_memory.chunking import RecursiveCharacterChunker, SemanticChunker
 
 def read_file(path):
     with open(path, 'r', encoding='utf-8') as f:
         return f.read()
 
-def chunk_text(text: str, max_chunk_size=1000) -> list[str]:
-    # Simple chunking by double newline (paragraphs) first
-    paragraphs = text.split('\n\n')
-    chunks = []
-    current_chunk = []
-    current_length = 0
-    
-    for p in paragraphs:
-        if current_length + len(p) > max_chunk_size and current_chunk:
-            chunks.append("\n\n".join(current_chunk))
-            current_chunk = []
-            current_length = 0
-        
-        current_chunk.append(p)
-        current_length += len(p)
-    
-    if current_chunk:
-        chunks.append("\n\n".join(current_chunk))
-        
-    return chunks
-
-def main():
-    parser = argparse.ArgumentParser(description="Ingest markdown files into MCP memory")
-    parser.add_argument("--project", required=True, help="Project ID")
-    parser.add_argument("files", nargs="+", help="Files to ingest")
-    
-    args = parser.parse_args()
-    
-def ingest_file(project_id: str, file_path: str):
+def ingest_file(project_id: str, file_path: str, chunker=None):
     """Ingest a single file into the memory store."""
     if not os.path.exists(file_path):
         print(f"Skipping {file_path}: File not found")
@@ -44,7 +17,11 @@ def ingest_file(project_id: str, file_path: str):
     print(f"Ingesting {file_path}...")
     try:
         content = read_file(file_path)
-        chunks = chunk_text(content)
+        
+        if chunker is None:
+            chunker = RecursiveCharacterChunker(chunk_size=1000, chunk_overlap=200)
+            
+        chunks = chunker.chunk(content)
         
         base_name = os.path.basename(file_path)
         
@@ -71,6 +48,7 @@ def ingest_file(project_id: str, file_path: str):
 def main():
     parser = argparse.ArgumentParser(description="Ingest markdown files into MCP memory")
     parser.add_argument("--project", required=True, help="Project ID")
+    parser.add_argument("--semantic", action="store_true", help="Use semantic chunking (slower but better context)")
     parser.add_argument("files", nargs="+", help="Files to ingest")
     
     args = parser.parse_args()
@@ -78,9 +56,14 @@ def main():
     # Initialize once
     store.initialize()
     
+    chunker = None
+    if args.semantic:
+        print("Using Semantic Chunking...")
+        chunker = SemanticChunker()
+        
     for file_path in args.files:
         try:
-            ingest_file(args.project, file_path)
+            ingest_file(args.project, file_path, chunker=chunker)
         except Exception:
             # Continue to next file on error
             continue
