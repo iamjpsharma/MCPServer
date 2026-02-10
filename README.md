@@ -151,5 +151,5 @@ The AI will effectively have "long-term memory" of the files you ingested.
 - [x] Fix installation instructions (Windows support, editable install)
 - [x] Fix resource listing error
 - [x] Improved chunking strategies (semantic chunking)
-- [ ] Support for PDF ingestion
+- [x] Support for PDF ingestion
 - [ ] HTTP transport wrapper
