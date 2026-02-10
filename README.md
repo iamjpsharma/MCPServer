@@ -152,4 +152,4 @@ The AI will effectively have "long-term memory" of the files you ingested.
 - [x] Fix resource listing error
 - [x] Improved chunking strategies (semantic chunking)
 - [x] Support for PDF ingestion
-- [ ] HTTP transport wrapper
+- [x] HTTP transport wrapper
