@@ -43,13 +43,19 @@ python -m mcp_memory.server --help
 
 ```bash
 git clone https://github.com/iamjpsharma/MCPServer.git
-cd MCPServer/mcp-memory-server
+cd MCPServer
 
-# Create and activate virtual environment
+# Create virtual environment
+# Mac/Linux:
 python3 -m venv .venv
 source .venv/bin/activate
 
-# Install dependencies
+# Windows (Command Prompt):
+# python -m venv .venv
+# .venv\Scripts\activate
+
+# Install dependencies AND the package in editable mode
+# (Critical step: -e . ensures the 'mcp_memory' module is found)
 pip install -e .
 ```
 
@@ -57,16 +63,16 @@ pip install -e .
 
 Add this to your `mcpServers` configuration (e.g., `~/.codeium/windsurf/mcp_config.json`):
 
-**Note:** Replace `/ABSOLUTE/PATH/TO/...` with the actual full path to this directory.
+**Note:** Replace `/ABSOLUTE/PATH/TO/MCPServer` with the actual full path to the cloned directory.
 
 ```json
 {
   "mcpServers": {
     "memory": {
-      "command": "/ABSOLUTE/PATH/TO/mcp-memory-server/.venv/bin/python",
+      "command": "/ABSOLUTE/PATH/TO/MCPServer/.venv/bin/python",
       "args": ["-m", "mcp_memory.server"],
       "env": {
-        "MCP_MEMORY_PATH": "/ABSOLUTE/PATH/TO/mcp-memory-server/mcp_memory_data"
+        "MCP_MEMORY_PATH": "/ABSOLUTE/PATH/TO/MCPServer/mcp_memory_data"
       }
     }
   }
