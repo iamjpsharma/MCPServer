@@ -43,7 +43,11 @@ class VectorStore:
         # We store: id, vector, text, project_id, metadata_json (string)
         # Using string for metadata is more robust for varying schema than LanceDB structs
         
-        if self.table_name not in self.db.table_names():
+        tables = self.db.list_tables()
+        if hasattr(tables, "tables"):
+            tables = tables.tables
+            
+        if self.table_name not in tables:
             # Create a dummy entry to initialize schema
             dummy_vector = self.model.encode("init").tolist()
             schema_data = [{
