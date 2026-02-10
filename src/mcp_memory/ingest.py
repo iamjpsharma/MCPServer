@@ -4,9 +4,23 @@ import uuid
 from mcp_memory.db import store
 from mcp_memory.chunking import RecursiveCharacterChunker, SemanticChunker
 
+from pypdf import PdfReader
+
 def read_file(path):
-    with open(path, 'r', encoding='utf-8') as f:
-        return f.read()
+    if path.lower().endswith('.pdf'):
+        try:
+            reader = PdfReader(path)
+            text = ""
+            for page in reader.pages:
+                text += page.extract_text() + "\n"
+            return text
+        except Exception as e:
+            print(f"Error reading PDF {path}: {e}")
+            raise e
+    else:
+        # Default to text/markdown
+        with open(path, 'r', encoding='utf-8') as f:
+            return f.read()
 
 def ingest_file(project_id: str, file_path: str, chunker=None):
     """Ingest a single file into the memory store."""
