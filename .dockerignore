@@ -1,0 +1,16 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.git/
+.gitignore
+.DS_Store
+mcp_memory_data/
+TestData/
+tests/
+Dockerfile
+.dockerignore

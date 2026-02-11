@@ -92,6 +92,21 @@ python -m mcp_memory.server_http
 
 Access the SSE endpoint at `http://localhost:8000/sse` and send messages to `http://localhost:8000/messages`.
 
+### 🐳 Run with Docker
+
+To run the server in a container:
+
+```bash
+# Build the image
+docker build -t mcp-memory .
+
+# Run the container
+# Mount your local data directory to /data inside the container
+docker run -p 8000:8000 -v $(pwd)/mcp_memory_data:/data mcp-memory
+```
+
+The server will be available at `http://localhost:8000/sse`.
+
 ### 1. Ingestion (Adding Context)
 
 Use the included helper script `ingest.sh` to add files to a specific project.
