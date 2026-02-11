@@ -199,7 +199,8 @@ The AI will effectively have "long-term memory" of the files you ingested.
 
 **🎯 Retrieval Quality**
 - [x] Metadata filtering (e.g., type=decision | rules | context)
-- [x] Similarity scoring in resultsic + keyword)
+- [x] Similarity scoring in results
+- [ ] Hybrid search (semantic + keyword)
 - [ ] Return evidence + similarity scores with search results
 - [ ] Configurable top_k defaults per project
 
