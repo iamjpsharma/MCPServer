@@ -81,6 +81,17 @@ Add this to your `mcpServers` configuration (e.g., `~/.codeium/windsurf/mcp_conf
 
 ## 🚀 Usage
 
+### 0. HTTP Server (New)
+
+You can run the server via HTTP (SSE) if you prefer:
+
+```bash
+# Run on port 8000
+python -m mcp_memory.server_http
+```
+
+Access the SSE endpoint at `http://localhost:8000/sse` and send messages to `http://localhost:8000/messages`.
+
 ### 1. Ingestion (Adding Context)
 
 Use the included helper script `ingest.sh` to add files to a specific project.
