@@ -24,6 +24,7 @@ RUN pip install --no-cache-dir .
 # Create directory for data persistence
 # The user should mount a volume here
 RUN mkdir -p /data
+VOLUME /data
 
 # Expose the HTTP port (default 8000)
 EXPOSE 8000

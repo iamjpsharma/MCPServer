@@ -1,6 +1,6 @@
 [project]
 name = "mcp-memory"
-version = "0.1.0"
+version = "0.2.0"
 description = "A persistent vector memory MCP server with multi-project isolation"
 authors = [
     { name = "Jaiprakash Sharma", email = "user@example.com" }

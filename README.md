@@ -12,7 +12,7 @@ A persistent vector memory server for Windsurf, VS Code, and other MCP-compliant
 - **No vendor lock-in:** Uses open standards and local files.
 - **Built for MCP:** Designed specifically to enhance Windsurf, Cursor, and other MCP-compatible IDEs.
 
-## ℹ️ Status (v0.1.0)
+## ℹ️ Status (v0.2.0)
 
 **Stable:**
 - ✅ Local MCP memory with Windsurf/Cursor
@@ -24,7 +24,9 @@ A persistent vector memory server for Windsurf, VS Code, and other MCP-compliant
 - 🚧 Memory pruning
 - 🚧 Remote sync
 
-> **Note:** This server uses **MCP stdio transport** (not HTTP) to match Windsurf/Cursor’s native MCP integration. Do not try to connect via `curl`.
+> **Note:** There are two ways to run this server:
+> 1. **Local IDE (stdio)**: Used by Windsurf/Cursor (default).
+> 2. **Docker/Server (HTTP)**: Used for remote deployments or Docker (exposes port 8000).
 
 
 ## 🏥 Health Check
