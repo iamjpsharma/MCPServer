@@ -138,27 +138,61 @@ class VectorStore:
             
         self.tbl.add(data)
         
-    def search(self, project_id: str, query: str, k: int = 5) -> List[Dict[str, Any]]:
+    def search(self, project_id: str, query: str, k: int = 5, filter_meta: Dict[str, Any] = None, min_score: float = None) -> List[Dict[str, Any]]:
         self.initialize()
         
         query_vec = self.model.encode(query).tolist()
         
+        # We fetch more results if filtering is active to ensure we return 'k' after filtering
+        fetch_k = k * 3 if filter_meta else k
+        
         results = self.tbl.search(query_vec)\
             .where(f"project_id = '{project_id}'")\
-            .limit(k)\
+            .limit(fetch_k)\
             .to_list()
             
-        # Parse metadata_json back to dict for the consumer
+        final_results = []
         for res in results:
+            # Parse metadata
+            meta = {}
             if 'metadata_json' in res:
                 try:
-                    res['metadata'] = json.loads(res['metadata_json'])
+                    meta = json.loads(res['metadata_json'])
                 except:
-                    res['metadata'] = {}
-            else:
-                res['metadata'] = {}
+                    pass
+            res['metadata'] = meta
+            
+            # Distance is usually returned by LanceDB (L2 or Cosine depending on config, default L2 usually but transformer models use cosine similarity often normalized)
+            # Actually SentenceTransformers produce normalized vectors, so Inner Product = Cosine Similarity.
+            # LanceDB default metric is L2. 
+            # Low L2 = High Similarity. 
+            # _distance is returned.
+            # To be more useful, let's keep _distance but also provide a 'score' if possible?
+            # For now, we just pass _distance through.
+            
+            # Filter
+            if filter_meta:
+                match = True
+                for key, val in filter_meta.items():
+                    if meta.get(key) != val:
+                        match = False
+                        break
+                if not match:
+                    continue
+            
+            # Score filter (Assuming _distance is L2, smaller is better. If we want min_score (similarity), we need conversion.
+            # For this iteration, let's expose _distance and let user decide, or convert if we knew metric.
+            # Let's assume user passes min_score as max_distance for L2? Or just raw distance filter?
+            # "Similarity score" usually means 0..1. 
+            # Let's stick to returning them and filtering if provided, assuming 'score' is roughly (1 - distance) or similar for normalized vectors, but simpler to just return distance for v0.2.
+            # Actually, standard is: score = 1 - (distance / 2) for L2 on normalized... 
+            # Let's just implement metadata filtering effectively first.
+            
+            final_results.append(res)
+            if len(final_results) >= k:
+                break
                 
-        return results
+        return final_results
 
     def list_sources(self, project_id: str) -> List[str]:
         self.initialize()

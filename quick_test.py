@@ -10,25 +10,36 @@ def test():
     print("Initializing Storage...")
     store.initialize()
     
-    pid = "test_project"
+    # Use restartable project
+    pid = "quick_test_project"
+    store.delete_project(pid)
     
     print("Adding memory...")
-    store.add(pid, "doc1", "The quick brown fox jumps over the lazy dog.", {"type": "test"})
-    store.add(pid, "doc2", "Machine learning provides vector memory capabilities.", {"type": "test"})
-    
-    print("Searching for 'fox'...")
-    results = store.search(pid, "fox", k=1)
-    if results and "fox" in results[0]['text']:
-        print("PASS: Found fox.")
-    else:
-        print("FAIL: Did not find fox.", results)
+    try:
+        store.add(pid, "doc1", "The quick brown fox jumps over the lazy dog.", {"type": "test", "source": "manual"})
+        store.add(pid, "doc2", "Machine learning provides vector memory capabilities.", {"type": "test", "source": "manual"})
         
-    print("Searching for 'vector'...")
-    results = store.search(pid, "vector memory", k=1)
-    if results and "Machine learning" in results[0]['text']:
-        print("PASS: Found vector memory.")
-    else:
-        print("FAIL: Did not find vector memory.", results)
+        print("Searching for 'fox'...")
+        results = store.search(pid, "fox", k=1)
+        if results and "fox" in results[0]['text']:
+            print("PASS: Found fox.")
+        else:
+            print("FAIL: Did not find fox.", results)
+            
+        print("Searching for 'vector'...")
+        results = store.search(pid, "vector memory", k=1)
+        if results and "Machine learning" in results[0]['text']:
+            print("PASS: Found vector memory.")
+        else:
+            print("FAIL: Did not find vector memory.", results)
+            
+    except Exception as e:
+        print(f"FAIL: {e}")
+        # Clean up
+        store.delete_project(pid)
+        raise e
+        
+    store.delete_project(pid)
 
 if __name__ == "__main__":
     test()

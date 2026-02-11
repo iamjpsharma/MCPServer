@@ -32,6 +32,11 @@ async def list_tools() -> list[types.Tool]:
                         "type": "integer",
                         "description": "Number of results to return (default: 5)",
                         "default": 5
+                    },
+                    "filter": {
+                        "type": "object",
+                        "description": "Optional metadata filter (e.g. {'type': 'decision'})",
+                        "additionalProperties": True
                     }
                 },
                 "required": ["project_id", "q"]
@@ -130,13 +135,21 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
             project_id = arguments["project_id"]
             q = arguments["q"]
             k = arguments.get("k", 5)
+            metadata_filter = arguments.get("filter", None)
             
-            results = store.search(project_id, q, k)
+            results = store.search(project_id, q, k, filter_meta=metadata_filter)
             
             # Format results for the LLM
             formatted_results = []
             for i, res in enumerate(results):
-                formatted_results.append(f"Result {i+1} (Score: {res.get('_distance', 'N/A')}):\n{res['text']}\nMetadata: {json.dumps(res['metadata'])}")
+                # distance is typically lower = better for L2. 
+                # Just show it as "Distance". 
+                # If we knew it was cosine similarity, we'd say Score.
+                # LanceDB default is L2.
+                score_label = "Distance"
+                score_val = res.get('_distance', 'N/A')
+                
+                formatted_results.append(f"Result {i+1} ({score_label}: {score_val}):\n{res['text']}\nMetadata: {json.dumps(res['metadata'])}")
             
             output = "\n\n".join(formatted_results)
             if not output:
