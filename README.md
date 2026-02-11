@@ -139,7 +139,7 @@ It is recommended to use a consistent prefix for your project IDs to avoid colli
 
 Once configured, the following tools will be available to the AI Assistant:
 
-- **`memory_search(project_id, q)`**: Semantic search.
+- **`memory_search(project_id, q, filter=None)`**: Semantic search. Supports metadata filtering (e.g., `filter={"type": "code"}`). Returns distance scores.
 - **`memory_add(project_id, id, text)`**: Manual addition.
 - **`memory_list_sources(project_id)`**: specific files ingested.
 - **`memory_delete_source(project_id, source)`**: Remove a specific file.
@@ -198,8 +198,8 @@ The AI will effectively have "long-term memory" of the files you ingested.
 - [x] Memory stats (chunk count, last updated, size)
 
 **🎯 Retrieval Quality**
-- [ ] Metadata filtering (e.g., type=decision | rules | context)
-- [ ] Hybrid search (semantic + keyword)
+- [x] Metadata filtering (e.g., type=decision | rules | context)
+- [x] Similarity scoring in resultsic + keyword)
 - [ ] Return evidence + similarity scores with search results
 - [ ] Configurable top_k defaults per project
 
