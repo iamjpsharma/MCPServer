@@ -40,8 +40,8 @@ class VectorStore:
         self.initialized = True
 
     def _ensure_table(self):
-        # We store: id, vector, text, project_id, metadata_json (string)
-        # Using string for metadata is more robust for varying schema than LanceDB structs
+        # We store: id, vector, text, project_id, source, metadata_json
+        # Added 'source' column in v0.2.0 for better governance
         
         tables = self.db.list_tables()
         if hasattr(tables, "tables"):
@@ -54,26 +54,80 @@ class VectorStore:
                 "id": "init_schema", 
                 "vector": dummy_vector, 
                 "text": "init", 
-                "project_id": "system", 
+                "project_id": "system",
+                "source": "system",
                 "metadata_json": "{}"
             }]
             self.tbl = self.db.create_table(self.table_name, data=schema_data)
             self.tbl.delete("id = 'init_schema'")
         else:
             self.tbl = self.db.open_table(self.table_name)
+            # Check for schema migration (v0.1.0 -> v0.2.0)
+            try:
+                # pyarrow schema
+                schema = self.tbl.schema
+                if "source" not in schema.names:
+                    logger.info("Migrating database schema to v0.2.0 (adding 'source' column)...")
+                    # Naive migration: fetch all, drop, recreate
+                    # This is safe-ish for local single-user, provided memory fits
+                    all_data = self.tbl.to_arrow().to_pylist()
+                    
+                    # Transform data
+                    new_data = []
+                    for row in all_data:
+                        # Skip if it's the init schema (shouldn't be there but just in case)
+                        if row['id'] == 'init_schema':
+                            continue
+                            
+                        meta = {}
+                        if 'metadata_json' in row:
+                            try:
+                                meta = json.loads(row['metadata_json'])
+                            except:
+                                pass
+                        
+                        row['source'] = meta.get('source', '')
+                        new_data.append(row)
+                    
+                    # Recreate table
+                    self.db.drop_table(self.table_name)
+                    
+                    if new_data:
+                        self.tbl = self.db.create_table(self.table_name, data=new_data)
+                    else:
+                        # Empty table re-init
+                        dummy_vector = self.model.encode("init").tolist()
+                        schema_data = [{
+                            "id": "init_schema", 
+                            "vector": dummy_vector, 
+                            "text": "init", 
+                            "project_id": "system",
+                            "source": "system",
+                            "metadata_json": "{}"
+                        }]
+                        self.tbl = self.db.create_table(self.table_name, data=schema_data)
+                        self.tbl.delete("id = 'init_schema'")
+                        
+                    logger.info(f"Migration complete. {len(new_data)} records updated.")
+            except Exception as e:
+                logger.error(f"Error checking/migrating schema: {e}")
 
     def add(self, project_id: str, doc_id: str, text: str, meta: Dict[str, Any] = None):
         self.initialize()
         
         logger.info(f"Adding document {doc_id} to project {project_id}")
         vector = self.model.encode(text).tolist()
+        meta = meta or {}
+        # Extract source from meta if present, otherwise default to empty
+        source = meta.get("source", "")
         
         data = [{
             "id": doc_id,
             "vector": vector,
             "text": text,
             "project_id": project_id,
-            "metadata_json": json.dumps(meta or {})
+            "source": source,
+            "metadata_json": json.dumps(meta)
         }]
         
         # Update if exists
@@ -105,6 +159,55 @@ class VectorStore:
                 res['metadata'] = {}
                 
         return results
+
+    def list_sources(self, project_id: str) -> List[str]:
+        self.initialize()
+        try:
+            # LanceDB SQL support varies by version/backend. 
+            # If 'source' column exists, we can query it.
+            # If strictly using Arrow, we can fetch all and distinct in python (ok for small-medium scale)
+            # or use projection.
+            
+            # Efficient approach: Fetch only 'source' column for project
+            # .search(None) -> no vector search, just filter
+            results = self.tbl.search(None)\
+                .where(f"project_id = '{project_id}'")\
+                .select(["source"])\
+                .limit(10000)\
+                .to_list()
+                
+            sources = set(r["source"] for r in results if r.get("source"))
+            return sorted(list(sources))
+        except Exception as e:
+            logger.error(f"Error listing sources: {e}")
+            return []
+
+    def delete_source(self, project_id: str, source: str) -> bool:
+        self.initialize()
+        logger.info(f"Deleting source '{source}' for project {project_id}")
+        try:
+            # If source column exists
+            self.tbl.delete(f"project_id = '{project_id}' AND source = '{source}'")
+            return True
+        except Exception as e:
+            logger.error(f"Error deleting source {source}: {e}")
+            # Fallback: try deleting by metadata_json if schema upgrade didn't happen
+            try:
+                # This is risky/slow but a fallback
+                self.tbl.delete(f"project_id = '{project_id}' AND metadata_json LIKE '%\"source\": \"{source}\"%'")
+                return True
+            except:
+                return False
+
+    def get_stats(self, project_id: str) -> Dict[str, Any]:
+        self.initialize()
+        try:
+            # Count chunks
+            count = self.tbl.search(None).where(f"project_id = '{project_id}'").limit(100000).to_arrow().num_rows
+            return {"chunk_count": count}
+        except Exception as e:
+            logger.error(f"Error getting stats: {e}")
+            return {"chunk_count": 0, "error": str(e)}
 
     def delete_project(self, project_id: str) -> bool:
         self.initialize()

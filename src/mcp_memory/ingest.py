@@ -22,7 +22,7 @@ def read_file(path):
         with open(path, 'r', encoding='utf-8') as f:
             return f.read()
 
-def ingest_file(project_id: str, file_path: str, chunker=None):
+def ingest_file(project_id: str, file_path: str, chunker=None, replace: bool = True):
     """Ingest a single file into the memory store."""
     if not os.path.exists(file_path):
         print(f"Skipping {file_path}: File not found")
@@ -30,6 +30,9 @@ def ingest_file(project_id: str, file_path: str, chunker=None):
 
     print(f"Ingesting {file_path}...")
     try:
+        if replace:
+            store.delete_source(project_id, file_path)
+
         content = read_file(file_path)
         
         if chunker is None:

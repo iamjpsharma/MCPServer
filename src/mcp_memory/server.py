@@ -63,6 +63,51 @@ async def list_tools() -> list[types.Tool]:
                 },
                 "required": ["project_id", "id", "text"]
             }
+        ),
+        types.Tool(
+            name="memory_list_sources",
+            description="List all files/sources ingested for a project.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "project_id": {"type": "string", "description": "Project ID"}
+                },
+                "required": ["project_id"]
+            }
+        ),
+        types.Tool(
+            name="memory_delete_source",
+            description="Delete all memories associated with a specific file source.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "project_id": {"type": "string"},
+                    "source": {"type": "string", "description": "The exact source (e.g., file path) to delete."}
+                },
+                "required": ["project_id", "source"]
+            }
+        ),
+        types.Tool(
+            name="memory_stats",
+            description="Get statistics for a project's memory (chunk count).",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "project_id": {"type": "string"}
+                },
+                "required": ["project_id"]
+            }
+        ),
+        types.Tool(
+            name="memory_reset",
+            description="Reset (clear) all memories for a project.",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "project_id": {"type": "string"}
+                },
+                "required": ["project_id"]
+            }
         )
     ]
 
@@ -108,6 +153,29 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
             store.add(project_id, doc_id, text, meta)
             
             return [types.TextContent(type="text", text=f"Successfully added memory '{doc_id}' to project '{project_id}'")]
+
+        elif name == "memory_list_sources":
+            project_id = arguments["project_id"]
+            sources = store.list_sources(project_id)
+            return [types.TextContent(type="text", text=json.dumps(sources, indent=2))]
+
+        elif name == "memory_delete_source":
+            project_id = arguments["project_id"]
+            source = arguments["source"]
+            success = store.delete_source(project_id, source)
+            msg = f"Deleted source '{source}'" if success else f"Failed to delete source '{source}' (not found?)"
+            return [types.TextContent(type="text", text=msg)]
+
+        elif name == "memory_stats":
+            project_id = arguments["project_id"]
+            stats = store.get_stats(project_id)
+            return [types.TextContent(type="text", text=json.dumps(stats, indent=2))]
+
+        elif name == "memory_reset":
+            project_id = arguments["project_id"]
+            success = store.delete_project(project_id)
+            msg = f"Reset project '{project_id}'" if success else f"Failed to reset project '{project_id}'"
+            return [types.TextContent(type="text", text=msg)]
             
         else:
             raise ValueError(f"Unknown tool: {name}")
