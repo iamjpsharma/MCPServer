@@ -139,8 +139,12 @@ It is recommended to use a consistent prefix for your project IDs to avoid colli
 
 Once configured, the following tools will be available to the AI Assistant:
 
-- **`memory_search(project_id, q)`**: Semantic search for "project-thaama", "project-openclaw", etc.
-- **`memory_add(project_id, id, text)`**: Manual addition of memory fragments.
+- **`memory_search(project_id, q)`**: Semantic search.
+- **`memory_add(project_id, id, text)`**: Manual addition.
+- **`memory_list_sources(project_id)`**: specific files ingested.
+- **`memory_delete_source(project_id, source)`**: Remove a specific file.
+- **`memory_stats(project_id)`**: Get chunk count.
+- **`memory_reset(project_id)`**: Clear all memories for a project.
 
 The AI will effectively have "long-term memory" of the files you ingested.
 
@@ -187,11 +191,11 @@ The AI will effectively have "long-term memory" of the files you ingested.
 
 ### 🚀 Near-Term (v0.2.x – Production Readiness)
 **🧠 Memory Governance**
-- [ ] List memory sources per project
-- [ ] Delete memory by source (file-level deletion)
-- [ ] Reset memory per project
-- [ ] Replace / reindex mode (prevent stale chunks)
-- [ ] Memory stats (chunk count, last updated, size)
+- [x] List memory sources per project
+- [x] Delete memory by source (file-level deletion)
+- [x] Reset memory per project
+- [x] Replace / reindex mode (prevent stale chunks)
+- [x] Memory stats (chunk count, last updated, size)
 
 **🎯 Retrieval Quality**
 - [ ] Metadata filtering (e.g., type=decision | rules | context)
