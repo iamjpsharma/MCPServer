@@ -156,11 +156,59 @@ The AI will effectively have "long-term memory" of the files you ingested.
 
 ## 🗺️ Roadmap
 
+### ✅ Completed (v0.1.x)
 - [x] Local vector storage (LanceDB)
 - [x] Multi-project isolation
 - [x] Markdown ingestion
-- [x] Fix installation instructions (Windows support, editable install)
-- [x] Fix resource listing error
-- [x] Improved chunking strategies (semantic chunking)
-- [x] Support for PDF ingestion
-- [x] HTTP transport wrapper
+- [x] PDF ingestion
+- [x] Semantic chunking strategies
+- [x] Windows support + editable install fixes
+- [x] HTTP transport wrapper (SSE)
+- [x] Fix resource listing errors (clean MCP UX)
+- [x] Robust docs + 5-minute setup
+- [x] Multi-IDE support (Windsurf, Cursor-compatible MCP)
+
+### 🚀 Near-Term (v0.2.x – Production Readiness)
+**🧠 Memory Governance**
+- [ ] List memory sources per project
+- [ ] Delete memory by source (file-level deletion)
+- [ ] Reset memory per project
+- [ ] Replace / reindex mode (prevent stale chunks)
+- [ ] Memory stats (chunk count, last updated, size)
+
+**🎯 Retrieval Quality**
+- [ ] Metadata filtering (e.g., type=decision | rules | context)
+- [ ] Hybrid search (semantic + keyword)
+- [ ] Return evidence + similarity scores with search results
+- [ ] Configurable top_k defaults per project
+
+**⚙️ Dev Workflow**
+- [ ] Auto-ingest on git commit / file change
+- [ ] `mcp-memory init <project-id>` bootstrap command
+- [ ] Project templates (PROJECT_CONTEXT.md, DECISIONS.md, AI_RULES.md)
+
+### 🧠 Advanced RAG (v0.3.x – Differentiators)
+- [ ] Hierarchical retrieval (summary-first, detail fallback)
+- [ ] Memory compression (old chunks → summaries)
+- [ ] Temporal ranking (prefer newer decisions)
+- [ ] Scoped retrieval (planner vs coder vs reviewer agents)
+- [ ] Query rewrite / expansion for better recall
+
+### 🏢 Team / SaaS Mode (Optional)
+*Philosophy: Local-first remains the default. SaaS is an optional deployment mode.*
+
+**🔐 Auth & Multi-Tenancy**
+- [ ] Project-level auth (API keys or JWT)
+- [ ] Org / team separation
+- [ ] Audit logs for memory changes
+
+**☁️ Remote Storage Backends (Pluggable)**
+- [ ] S3-compatible vector store backend
+- [ ] Postgres / pgvector backend
+- [ ] Sync & Federation (Local ↔ Remote)
+
+### 🚫 Non-Goals
+- ❌ No mandatory cloud dependency
+- ❌ No vendor lock-in
+- ❌ No chat history as “memory” by default (signal > noise)
+- ❌ No model fine-tuning
