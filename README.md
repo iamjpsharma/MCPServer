@@ -41,6 +41,44 @@ python -m mcp_memory.server --help
 
 ## ✅ Quickstart (5-Minute Setup)
 
+There are two ways to set this up: **Global Install** (recommended for ease of use) or **Local Dev**.
+
+### Option A: Global Install (Like `npm -g`)
+
+This method allows you to run `mcp-memory` from anywhere without managing virtual environments manually.
+
+**Prerequisites:**
+- Python 3.10+
+- [`pipx`](https://github.com/pypa/pipx) (Recommended: `brew install pipx` on macOS)
+
+```bash
+# Install directly from GitHub
+pipx install git+https://github.com/iamjpsharma/MCPServer.git
+
+# Verify installation
+mcp-memory --help
+```
+
+**Configure Windsurf / VS Code:**
+
+Since `pipx` puts the executable in your PATH, the config is simpler:
+
+```json
+{
+  "mcpServers": {
+    "memory": {
+      "command": "mcp-memory",
+      "args": [],
+      "env": {
+        "MCP_MEMORY_PATH": "/ABSOLUTE/PATH/TO/YOUR/DATA/DIR"
+      }
+    }
+  }
+}
+```
+
+### Option B: Local Dev Setup
+
 **1. Clone and Setup**
 
 ```bash
@@ -48,38 +86,14 @@ git clone https://github.com/iamjpsharma/MCPServer.git
 cd MCPServer
 
 # Create virtual environment
-# Mac/Linux:
 python3 -m venv .venv
 source .venv/bin/activate
 
-# Windows (Command Prompt):
-# python -m venv .venv
-# .venv\Scripts\activate
-
 # Install dependencies AND the package in editable mode
-# (Critical step: -e . ensures the 'mcp_memory' module is found)
 pip install -e .
 ```
 
-**2. Configure Windsurf / VS Code**
-
-Add this to your `mcpServers` configuration (e.g., `~/.codeium/windsurf/mcp_config.json`):
-
-**Note:** Replace `/ABSOLUTE/PATH/TO/MCPServer` with the actual full path to the cloned directory.
-
-```json
-{
-  "mcpServers": {
-    "memory": {
-      "command": "/ABSOLUTE/PATH/TO/MCPServer/.venv/bin/python",
-      "args": ["-m", "mcp_memory.server"],
-      "env": {
-        "MCP_MEMORY_PATH": "/ABSOLUTE/PATH/TO/MCPServer/mcp_memory_data"
-      }
-    }
-  }
-}
-```
+**2. Configure Windsurf / VS Code (Local Dev)**
 
 ## 🚀 Usage
 
