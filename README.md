@@ -62,8 +62,8 @@ See [pipx installation instructions](https://github.com/pypa/pipx).
 **2. Install `fremem`:**
 
 ```bash
-# Install directly from GitHub
-pipx install git+https://github.com/iamjpsharma/fremem.git
+# Install from PyPI
+pipx install fremem
 
 # Verify installation
 fremem --help
