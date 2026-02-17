@@ -47,9 +47,19 @@ There are two ways to set this up: **Global Install** (recommended for ease of u
 
 This method allows you to run `fremem` from anywhere without managing virtual environments manually.
 
-**Prerequisites:**
-- Python 3.10+
-- [`pipx`](https://github.com/pypa/pipx) (Recommended: `brew install pipx` on macOS)
+**1. Install `pipx` (if not already installed):**
+
+*MacOS (via Homebrew):*
+```bash
+brew install pipx
+pipx ensurepath
+# Restart your terminal after this!
+```
+
+*Linux/Windows:*
+See [pipx installation instructions](https://github.com/pypa/pipx).
+
+**2. Install `fremem`:**
 
 ```bash
 # Install directly from GitHub
@@ -182,6 +192,11 @@ The AI will effectively have "long-term memory" of the files you ingested.
 
 ## 🛠 Troubleshooting
 
+- **"fremem: command not found" after installing**:
+  - This means `pipx` installed the binary to a location not in your system's PATH (e.g., `~/.local/bin`).
+  - **Fix:** Run `pipx ensurepath` and restart your terminal.
+  - **Manual Fix:** Add `export PATH="$PATH:$HOME/.local/bin"` to your shell config (e.g., `~/.zshrc`).
+
 - **"No MCP server found" or Connection errors**:
   - Check the output of `pwd` to ensure your absolute paths in `mcp_config.json` are 100% correct.
   - Ensure the virtual environment (`.venv`) is created and dependencies are installed.
@@ -191,6 +206,18 @@ The AI will effectively have "long-term memory" of the files you ingested.
 
 - **Embedding Model Downloads**:
   - On the first run, the server downloads the `all-MiniLM-L6-v2` model (approx 100MB). This may cause a slight delay on the first request.
+
+## 🗑️ Uninstalling
+
+To remove `fremem` from your system:
+
+**If installed via `pipx` (Global):**
+```bash
+pipx uninstall fremem
+```
+
+**If installed locally (Dev):**
+Just delete the directory.
 
 ## 📁 Repo Structure
 
