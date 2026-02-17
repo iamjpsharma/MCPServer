@@ -80,12 +80,14 @@ Since `pipx` puts the executable in your PATH, the config is simpler:
       "command": "fremem",
       "args": [],
       "env": {
-        "MCP_MEMORY_PATH": "/ABSOLUTE/PATH/TO/YOUR/DATA/DIR"
+        "MCP_MEMORY_PATH": "/Users/YOUR_USERNAME/mcp-memory-data"
       }
     }
   }
 }
 ```
+
+> **Note on `MCP_MEMORY_PATH`**: This is where `fremem` will store its persistent database. You can point this to any directory you like (checks locally or creating it if it doesn't exist). We recommend something like `~/mcp-memory-data` or `~/.fremem-data`. It must be an absolute path.
 
 ### Option B: Local Dev Setup
 
@@ -122,6 +124,7 @@ Add this to your `mcpServers` configuration (e.g., `~/.codeium/windsurf/mcp_conf
   }
 }
 ```
+*In local dev mode, it's common to store the data inside the repo (ignored by git), but you can use any absolute path.*
 
 ## 🚀 Usage
 
