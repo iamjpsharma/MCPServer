@@ -1,5 +1,5 @@
 import pytest
-from mcp_memory.db import store
+from fremem.db import store
 import os
 import shutil
 import tempfile
@@ -11,7 +11,7 @@ def test_project():
 
 @pytest.fixture(autouse=True)
 def cleanup(test_project):
-    import mcp_memory.db as db
+    import fremem.db as db
     
     # Use temp db
     tmp_dir = tempfile.mkdtemp()

@@ -1,7 +1,7 @@
 import pytest
 import os
 from unittest.mock import patch, MagicMock
-from mcp_memory.ingest import ingest_file
+from fremem.ingest import ingest_file
 
 # Path to real PDF (relative to this test file)
 # ../../TestData/AI in HR Automation.pdf
@@ -10,13 +10,13 @@ REAL_PDF_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../T
 @pytest.fixture
 def mock_ingest_store(mock_store):
     """Patch the store object imported in ingest.py with our test store fixture"""
-    with patch("mcp_memory.ingest.store", mock_store):
+    with patch("fremem.ingest.store", mock_store):
         yield mock_store
 
 def test_pdf_ingestion_mocked(mock_store):
     """Test with mocked PDF reader (keeping for unit isolation)"""
-    with patch("mcp_memory.ingest.store", mock_store), \
-         patch("mcp_memory.ingest.PdfReader") as mock_pdf_class:
+    with patch("fremem.ingest.store", mock_store), \
+         patch("fremem.ingest.PdfReader") as mock_pdf_class:
         
         # Mock PDF behavior
         mock_pdf_instance = MagicMock()
@@ -43,7 +43,7 @@ def test_pdf_ingestion_real_file(mock_store):
     """Test with the real PDF file from TestData"""
     
     # Patch only the store, let PdfReader be real
-    with patch("mcp_memory.ingest.store", mock_store):
+    with patch("fremem.ingest.store", mock_store):
         project_id = "pdf-test-real"
         
         # Spy on perform add to check content

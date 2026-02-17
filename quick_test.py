@@ -4,7 +4,7 @@ import os
 # Add src to path just in case
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
-from mcp_memory.db import store
+from fremem.db import store
 
 def test():
     print("Initializing Storage...")

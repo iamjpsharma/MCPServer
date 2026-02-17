@@ -7,9 +7,9 @@ from mcp.server.stdio import stdio_server
 # This is the Windsurf/IDE stdio MCP endpoint
 # See README for usage examples
 import mcp.types as types
-from mcp_memory.db import store
+from fremem.db import store
 
-server = Server("mcp-memory")
+server = Server("fremem")
 
 @server.list_tools()
 async def list_tools() -> list[types.Tool]:

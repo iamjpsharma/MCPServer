@@ -12,4 +12,4 @@ if [ ! -f "$PYTHON_CMD" ]; then
 fi
 
 # Run the manage module
-"$PYTHON_CMD" -m mcp_memory.manage "$@"
+"$PYTHON_CMD" -m fremem.manage "$@"

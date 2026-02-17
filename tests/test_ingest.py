@@ -1,11 +1,11 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from mcp_memory.ingest import ingest_file
+from fremem.ingest import ingest_file
 
 @pytest.fixture
 def mock_ingest_store(mock_store):
     """Patch the store object imported in ingest.py"""
-    with patch("mcp_memory.ingest.store", mock_store):
+    with patch("fremem.ingest.store", mock_store):
         yield mock_store
 
 def test_ingest_file(mock_ingest_store, tmp_path):

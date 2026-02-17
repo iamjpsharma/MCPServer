@@ -7,7 +7,7 @@ from typing import List, Optional, Dict, Any
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("mcp-memory")
+logger = logging.getLogger("fremem")
 
 # Constants
 DB_PATH = os.environ.get("MCP_MEMORY_PATH", os.path.join(os.getcwd(), "mcp_memory_data"))

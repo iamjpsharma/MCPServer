@@ -1,6 +1,6 @@
 import pytest
-from mcp_memory.db import store
-from mcp_memory.ingest import ingest_file
+from fremem.db import store
+from fremem.ingest import ingest_file
 import os
 from unittest.mock import MagicMock, patch
 
@@ -12,7 +12,7 @@ def test_project():
 def cleanup(test_project):
     import tempfile
     import shutil
-    from mcp_memory import db
+    from fremem import db
     
     # Create temp dir for independent test DB
     tmp_dir = tempfile.mkdtemp()

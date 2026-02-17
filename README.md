@@ -1,8 +1,8 @@
-# MCP Memory Server
+# Fremem (formerly MCP Memory Server)
 
-![License](https://img.shields.io/github/license/iamjpsharma/MCPServer?color=blue)
+![License](https://img.shields.io/github/license/iamjpsharma/fremem?color=blue)
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
-![Release](https://img.shields.io/github/v/release/iamjpsharma/MCPServer?include_prereleases)
+![Release](https://img.shields.io/github/v/release/iamjpsharma/fremem?include_prereleases)
 
 A persistent vector memory server for Windsurf, VS Code, and other MCP-compliant editors.
 
@@ -35,7 +35,7 @@ To verify the server binary runs correctly:
 
 ```bash
 # From within the virtual environment
-python -m mcp_memory.server --help
+python -m fremem.server --help
 ```
 
 
@@ -45,7 +45,7 @@ There are two ways to set this up: **Global Install** (recommended for ease of u
 
 ### Option A: Global Install (Like `npm -g`)
 
-This method allows you to run `mcp-memory` from anywhere without managing virtual environments manually.
+This method allows you to run `fremem` from anywhere without managing virtual environments manually.
 
 **Prerequisites:**
 - Python 3.10+
@@ -53,10 +53,10 @@ This method allows you to run `mcp-memory` from anywhere without managing virtua
 
 ```bash
 # Install directly from GitHub
-pipx install git+https://github.com/iamjpsharma/MCPServer.git
+pipx install git+https://github.com/iamjpsharma/fremem.git
 
 # Verify installation
-mcp-memory --help
+fremem --help
 ```
 
 **Configure Windsurf / VS Code:**
@@ -67,7 +67,7 @@ Since `pipx` puts the executable in your PATH, the config is simpler:
 {
   "mcpServers": {
     "memory": {
-      "command": "mcp-memory",
+      "command": "fremem",
       "args": [],
       "env": {
         "MCP_MEMORY_PATH": "/ABSOLUTE/PATH/TO/YOUR/DATA/DIR"
@@ -82,8 +82,8 @@ Since `pipx` puts the executable in your PATH, the config is simpler:
 **1. Clone and Setup**
 
 ```bash
-git clone https://github.com/iamjpsharma/MCPServer.git
-cd MCPServer
+git clone https://github.com/iamjpsharma/fremem.git
+cd fremem
 
 # Create virtual environment
 python3 -m venv .venv
@@ -95,6 +95,24 @@ pip install -e .
 
 **2. Configure Windsurf / VS Code (Local Dev)**
 
+Add this to your `mcpServers` configuration (e.g., `~/.codeium/windsurf/mcp_config.json`):
+
+**Note:** Replace `/ABSOLUTE/PATH/TO/fremem` with the actual full path to the cloned directory.
+
+```json
+{
+  "mcpServers": {
+    "memory": {
+      "command": "/ABSOLUTE/PATH/TO/fremem/.venv/bin/python",
+      "args": ["-m", "fremem.server"],
+      "env": {
+        "MCP_MEMORY_PATH": "/ABSOLUTE/PATH/TO/fremem/mcp_memory_data"
+      }
+    }
+  }
+}
+```
+
 ## 🚀 Usage
 
 ### 0. HTTP Server (New)
@@ -103,7 +121,7 @@ You can run the server via HTTP (SSE) if you prefer:
 
 ```bash
 # Run on port 8000
-python -m mcp_memory.server_http
+python -m fremem.server_http
 ```
 
 Access the SSE endpoint at `http://localhost:8000/sse` and send messages to `http://localhost:8000/messages`.
@@ -114,11 +132,11 @@ To run the server in a container:
 
 ```bash
 # Build the image
-docker build -t mcp-memory .
+docker build -t fremem .
 
 # Run the container
 # Mount your local data directory to /data inside the container
-docker run -p 8000:8000 -v $(pwd)/mcp_memory_data:/data mcp-memory
+docker run -p 8000:8000 -v $(pwd)/mcp_memory_data:/data fremem
 ```
 
 The server will be available at `http://localhost:8000/sse`.
@@ -178,7 +196,7 @@ The AI will effectively have "long-term memory" of the files you ingested.
 
 ```
 /
-├── src/mcp_memory/
+├── src/fremem/
 │   ├── server.py       # Main MCP server entry point
 │   ├── ingest.py       # Ingestion logic
 │   └── db.py           # LanceDB wrapper

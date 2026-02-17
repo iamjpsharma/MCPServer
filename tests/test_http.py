@@ -1,7 +1,7 @@
 import pytest
 from starlette.testclient import TestClient
 from unittest.mock import patch, AsyncMock, MagicMock
-import mcp_memory.server
+import fremem.server
 
 # Mock the server run method before importing server_http if possible,
 # or patch it.
@@ -10,11 +10,11 @@ import mcp_memory.server
 @pytest.fixture
 def mock_server_run():
     # Patch the run method on the server instance
-    with patch("mcp_memory.server.server.run", new_callable=AsyncMock) as mock_run:
+    with patch("fremem.server.server.run", new_callable=AsyncMock) as mock_run:
         yield mock_run
 
 def test_sse_endpoint(mock_server_run):
-    from mcp_memory.server_http import app
+    from fremem.server_http import app
     
     with TestClient(app) as client:
         # SSE request
@@ -36,7 +36,7 @@ def test_sse_endpoint(mock_server_run):
             pass
 
 def test_messages_endpoint():
-    from mcp_memory.server_http import app
+    from fremem.server_http import app
     
     with TestClient(app) as client:
         # Just check if POST /messages is handled (even if it 404s/400s due to missing session)
@@ -50,7 +50,7 @@ def test_messages_endpoint():
             await send({"type": "http.response.start", "status": 200, "headers": []})
             await send({"type": "http.response.body", "body": b"ok", "more_body": False})
 
-        with patch("mcp_memory.server_http.transport.handle_post_message", new_callable=AsyncMock) as mock_handle:
+        with patch("fremem.server_http.transport.handle_post_message", new_callable=AsyncMock) as mock_handle:
             mock_handle.side_effect = mock_handle_side_effect
             response = client.post("/messages", json={"jsonrpc": "2.0", "method": "ping", "id": 1})
             assert response.status_code == 200

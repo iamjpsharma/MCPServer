@@ -5,11 +5,11 @@ from starlette.routing import Route, Mount
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
 from mcp.server.sse import SseServerTransport
-from mcp_memory.server import server
+from fremem.server import server
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("mcp-memory-http")
+logger = logging.getLogger("fremem-http")
 
 # The transport needs to know the endpoint where clients should send messages.
 # In a real deployment, this might need to be a full URL or absolute path.

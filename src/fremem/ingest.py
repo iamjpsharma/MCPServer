@@ -1,8 +1,8 @@
 import argparse
 import os
 import uuid
-from mcp_memory.db import store
-from mcp_memory.chunking import RecursiveCharacterChunker, SemanticChunker
+from fremem.db import store
+from fremem.chunking import RecursiveCharacterChunker, SemanticChunker
 
 from pypdf import PdfReader
 

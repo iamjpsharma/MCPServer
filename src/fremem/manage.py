@@ -1,6 +1,6 @@
 import argparse
 import sys
-from mcp_memory.db import store
+from fremem.db import store
 
 def main():
     parser = argparse.ArgumentParser(description="Manage MCP Memory Projects")

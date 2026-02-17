@@ -12,4 +12,4 @@ if [ ! -f "$PYTHON_CMD" ]; then
 fi
 
 # Run the ingest module
-"$PYTHON_CMD" -m mcp_memory.ingest "$@"
+"$PYTHON_CMD" -m fremem.ingest "$@"

@@ -1,7 +1,7 @@
 import re
 from typing import List, Optional
 import numpy as np
-from mcp_memory.db import store
+from fremem.db import store
 
 class Chunker:
     def chunk(self, text: str) -> List[str]:

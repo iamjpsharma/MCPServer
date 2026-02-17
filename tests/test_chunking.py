@@ -1,5 +1,5 @@
 import pytest
-from mcp_memory.chunking import RecursiveCharacterChunker, SemanticChunker
+from fremem.chunking import RecursiveCharacterChunker, SemanticChunker
 from unittest.mock import MagicMock, patch
 
 def test_recursive_chunker():
@@ -20,7 +20,7 @@ def test_recursive_chunker_simple():
     assert chunks[0] == "A" * 50
     assert chunks[1] == "B" * 50
 
-@patch("mcp_memory.chunking.store")
+@patch("fremem.chunking.store")
 def test_semantic_chunker(mock_store):
     """Test embedding-based chunking."""
     # Mock embedding model

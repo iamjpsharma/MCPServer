@@ -1,11 +1,11 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from mcp_memory.server import list_tools, call_tool, list_resources, read_resource
+from fremem.server import list_tools, call_tool, list_resources, read_resource
 
 @pytest.fixture
 def mock_server_store(mock_store):
     """Patch the store object imported in server.py"""
-    with patch("mcp_memory.server.store", mock_store):
+    with patch("fremem.server.store", mock_store):
         yield mock_store
 
 @pytest.mark.asyncio

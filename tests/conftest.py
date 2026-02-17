@@ -8,7 +8,7 @@ from unittest.mock import patch
 # Ensure src is in path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
 
-from mcp_memory.db import VectorStore
+from fremem.db import VectorStore
 
 @pytest.fixture
 def temp_db_path():
@@ -23,7 +23,7 @@ def mock_store(temp_db_path):
     Initialize a clean VectorStore with a temporary path.
     Patches module-level DB_PATH and resets the singleton.
     """
-    with patch("mcp_memory.db.DB_PATH", temp_db_path):
+    with patch("fremem.db.DB_PATH", temp_db_path):
         # Reset singleton to force re-initialization
         VectorStore._instance = None
         store = VectorStore()
