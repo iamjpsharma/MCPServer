@@ -212,8 +212,13 @@ async def main():
             options
         )
 
-if __name__ == "__main__":
+def cli_main():
+    """Synchronous entry point for the CLI (used by pyproject.toml scripts)."""
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
         pass
+
+if __name__ == "__main__":
+    cli_main()
+

@@ -1,6 +1,6 @@
 [project]
 name = "fremem"
-version = "0.2.0"
+version = "0.2.1"
 description = "A persistent vector memory MCP server with multi-project isolation"
 readme = "README.md"
 authors = [
@@ -41,7 +41,7 @@ dev = [
 ]
 
 [project.scripts]
-fremem = "fremem.server:main"
+fremem = "fremem.server:cli_main"
 fremem-ingest = "fremem.ingest:main"
 
 [build-system]
